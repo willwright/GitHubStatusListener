@@ -1,0 +1,11 @@
+{
+    "name": "mecodeninja/githubstatuslistener",
+    "require": {},
+    "extra": {
+        "laravel" : {
+            "providers": [
+                "MeCodeNinja\\GitHubStatusListener\\GitHubStatusListenerServiceProvider"
+            ]
+        }
+    }
+}
