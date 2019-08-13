@@ -1,6 +1,6 @@
 <?php
 
-namespace MeCodeNinja\GitHubStatusListener;
+namespace MeCodeNinja\Webhooks;
 
 use App\Events\GitHub\PullRequest;
 use App\Listeners\GitHub\DevelopBranchListener;
@@ -8,8 +8,7 @@ use App\Listeners\GitHub\VendorPathListener;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
-
-class GitHubStatusListenerServiceProvider extends ServiceProvider
+class WebhooksServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.

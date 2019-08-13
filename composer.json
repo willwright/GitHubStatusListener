@@ -1,16 +1,17 @@
 {
-    "name": "mecodeninja/githubstatuslistener",
+    "name": "mecodeninja/webhooks",
+    "description": "Provides a listener for GitHub Webhooks, runs business logic, creates a Status(es) in GitHub based on the results of the business logic.",
     "require": {},
     "extra": {
         "laravel" : {
             "providers": [
-                "MeCodeNinja\\GitHubStatusListener\\GitHubStatusListenerServiceProvider"
+                "MeCodeNinja\\Webhooks\\GitHubWebhooksServiceProvider"
             ]
         }
     },
     "autoload": {
         "psr-4": {
-            "MeCodeNinja\\GitHubStatusListener\\": "src/"
+            "MeCodeNinja\\Webhooks\\": "src/"
         }
     }
 }
