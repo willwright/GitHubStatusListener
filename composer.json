@@ -7,5 +7,10 @@
                 "MeCodeNinja\\GitHubStatusListener\\GitHubStatusListenerServiceProvider"
             ]
         }
+    },
+    "autoload": {
+        "psr-4": {
+            "MeCodeNinja\\GitHubStatusListener\\": "src/"
+        }
     }
 }
