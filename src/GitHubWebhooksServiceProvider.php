@@ -1,6 +1,6 @@
 <?php
 
-namespace MeCodeNinja\Webhooks;
+namespace MeCodeNinja\GitHubWebhooks;
 
 use App\Events\GitHub\PullRequest;
 use App\Listeners\GitHub\DevelopBranchListener;
@@ -8,7 +8,7 @@ use App\Listeners\GitHub\VendorPathListener;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
-class WebhooksServiceProvider extends ServiceProvider
+class GitHubWebhooksServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
