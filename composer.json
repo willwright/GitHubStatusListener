@@ -1,17 +1,28 @@
 {
-    "name": "mecodeninja/githubwebhooks",
-    "description": "Provides a listener for GitHub Webhooks, runs business logic, creates a Status(es) in GitHub based on the results of the business logic.",
-    "require": {},
-    "extra": {
-        "laravel" : {
-            "providers": [
-                "MeCodeNinja\\GitHubWebhooks\\GitHubWebhooksServiceProvider"
-            ]
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "MeCodeNinja\\GitHubWebhooks\\": "src/"
-        }
+  "name": "mecodeninja/githubwebhooks",
+  "description": "Provides a listener for GitHub Webhooks, runs business logic, creates a Status(es) in GitHub based on the results of the business logic.",
+  "type": "library",
+  "keywords": ["laravel","github"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Will Wright",
+      "email": "",
+      "homepage": "",
+      "role": "Author"
     }
+  ],
+  "require": {},
+  "extra": {
+    "laravel" : {
+      "providers": [
+        "MeCodeNinja\\GitHubWebhooks\\GitHubWebhooksServiceProvider"
+      ]
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "MeCodeNinja\\GitHubWebhooks\\": "src/"
+    }
+  }
 }
