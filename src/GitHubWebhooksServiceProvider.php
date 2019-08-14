@@ -2,9 +2,9 @@
 
 namespace MeCodeNinja\GitHubWebhooks;
 
-use App\Events\GitHub\PullRequest;
-use App\Listeners\GitHub\DevelopBranchListener;
-use App\Listeners\GitHub\VendorPathListener;
+use MeCodeNinja\GitHubWebhooks\Events\PullRequest;
+use MeCodeNinja\GitHubWebhooks\Listeners\DevelopBranchListener;
+use MeCodeNinja\GitHubWebhooks\Listeners\VendorPathListener;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
