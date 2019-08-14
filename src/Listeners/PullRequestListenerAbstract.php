@@ -3,14 +3,14 @@
 namespace MeCodeNinja\GitHubWebhooks\Listeners;
 
 use MeCodeNinja\GitHubWebhooks\Events\PullRequest;
-use MeCodeNinja\GitHubWebhooks\GitHub\Helper;
+use MeCodeNinja\GitHubWebhooks\GitHub\Config;
 use MeCodeNinja\GitHubWebhooks\GitHub\Status;
 use GuzzleHttp\Exception\GuzzleException;
 
 abstract class PullRequestListenerAbstract implements StatusListenerInterface
 {
-    /** @var Helper */
-    private $_githubHelper;
+    /** @var Config */
+    private $_config;
 
     /** @var Status */
     private $_oStatus;
@@ -33,11 +33,11 @@ abstract class PullRequestListenerAbstract implements StatusListenerInterface
      * @return void
      */
     public function __construct(
-        Helper $helper,
+        Config $config,
         \GuzzleHttp\Client $client
     )
     {
-        $this->_githubHelper = $helper;
+        $this->_config = $config;
         $this->_client = $client;
     }
 
@@ -59,7 +59,7 @@ abstract class PullRequestListenerAbstract implements StatusListenerInterface
         /**
          * Get the User token so that we can interact with the repo
          */
-        $this->_token = $this->_githubHelper->getUserToken($json->repository->full_name);
+        $this->_token = $this->_config->getUserToken($json->repository->full_name);
 
         if (empty($this->_token)) {
             return;
@@ -83,7 +83,7 @@ abstract class PullRequestListenerAbstract implements StatusListenerInterface
         $this->_oStatus->setDescription($this->getDescription());
 
         try {
-            $this->_oStatus->create();
+//            $this->_oStatus->create();
         } catch (GuzzleException $guzzleException) {
             //@TODO: What to do wih this?
         }

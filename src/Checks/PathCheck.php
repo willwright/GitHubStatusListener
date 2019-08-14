@@ -3,8 +3,9 @@
 namespace MeCodeNinja\GitHubWebhooks\Listeners;
 
 use GuzzleHttp\Exception\GuzzleException;
+use MeCodeNinja\Checks\CheckAbstract;
 
-class VendorPathListener extends PullRequestListenerAbstract
+class PathCheck extends CheckAbstract
 {
     const GRAPHQL_ENDPOINT = 'https://api.github.com/graphql';
 

@@ -3,10 +3,11 @@
 namespace MeCodeNinja\GitHubWebhooks\Listeners;
 
 use Illuminate\Support\Facades\Log;
+use MeCodeNinja\Checks\CheckAbstract;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-class DevelopBranchListener extends PullRequestListenerAbstract
+class BranchCheck extends CheckAbstract
 {
     /** @var string */
     private $_repoPath;
