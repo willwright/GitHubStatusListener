@@ -75,6 +75,7 @@ class PullRequestListener
         $this->_oStatus = new Status($this->_client, $this->_token);
 
         //@TODO: Read config here and loop over Checks using factory to create concrete objects and call doCheck
+        //@TODO: Possible to use Laravel Config SEE: Package development instead of YAML?
         $checksArr = $this->_config->getChecks($json->repository->full_name);
 
         for ($i=0; $i < count($checksArr); $i++) {
