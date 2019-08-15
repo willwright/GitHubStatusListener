@@ -1,9 +1,8 @@
 <?php
 
-namespace MeCodeNinja\GitHubWebhooks\Listeners;
+namespace MeCodeNinja\GitHubWebhooks\Checks;
 
 use Illuminate\Support\Facades\Log;
-use MeCodeNinja\Checks\CheckAbstract;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -138,6 +137,6 @@ class BranchCheck extends CheckAbstract
      * @return string
      */
     private function getTokenCloneUrl(string $token, string $clone_url) {
-        return str_replace_first('github.com',"$token@github.com",$clone_url);
+        return str_replace_first('github.com',"$token@github.com", $clone_url);
     }
 }

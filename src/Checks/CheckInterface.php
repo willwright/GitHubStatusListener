@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MeCodeNinja\Checks;
+namespace MeCodeNinja\GitHubWebhooks\Checks;
 
 
 interface CheckInterface

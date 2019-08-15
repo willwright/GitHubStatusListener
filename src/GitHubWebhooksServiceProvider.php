@@ -8,6 +8,7 @@ use MeCodeNinja\GitHubWebhooks\Listeners\BranchCheck;
 use MeCodeNinja\GitHubWebhooks\Listeners\PathCheck;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use MeCodeNinja\GitHubWebhooks\Listeners\PullRequestListener;
 
 class GitHubWebhooksServiceProvider extends ServiceProvider
 {
@@ -19,8 +20,7 @@ class GitHubWebhooksServiceProvider extends ServiceProvider
     public function boot(Config $config)
     {
         //Bind Event Listeners
-        Event::listen(PullRequest::class, BranchCheck::class);
-        Event::listen(PullRequest::class, PathCheck::class);
+        Event::listen(PullRequest::class, PullRequestListener::class);
 
         //Bind Routes
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');

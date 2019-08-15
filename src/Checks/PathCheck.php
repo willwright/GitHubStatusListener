@@ -1,9 +1,8 @@
 <?php
 
-namespace MeCodeNinja\GitHubWebhooks\Listeners;
+namespace MeCodeNinja\GitHubWebhooks\Checks;
 
 use GuzzleHttp\Exception\GuzzleException;
-use MeCodeNinja\Checks\CheckAbstract;
 
 class PathCheck extends CheckAbstract
 {
@@ -11,6 +10,15 @@ class PathCheck extends CheckAbstract
 
     /** @var array  */
     private $_files = [];
+
+    /** @var  */
+    private $_client;
+
+    /** @var string */
+    private $_token;
+
+    /** @var string */
+    private $_nodeId;
 
     /**
      * This is specific implementation of check for this specific Listener

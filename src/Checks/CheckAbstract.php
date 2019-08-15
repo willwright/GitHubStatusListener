@@ -1,10 +1,31 @@
 <?php
 
 
-namespace MeCodeNinja\Checks;
+namespace MeCodeNinja\GitHubWebhooks\Checks;
 
 
-class CheckAbstract implements CheckInterface
+abstract class CheckAbstract implements CheckInterface
 {
+    /** @var string */
+    protected $_content;
+
+    /** @var string */
+    protected $_token;
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token)
+    {
+        $this->_token = $token;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent($content)
+    {
+        $this->_content = $content;
+    }
 
 }
