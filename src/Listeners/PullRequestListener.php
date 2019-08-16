@@ -5,6 +5,7 @@ namespace MeCodeNinja\GitHubWebhooks\Listeners;
 
 
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Log;
 use MeCodeNinja\GitHubWebhooks\Checks\CheckFactory;
 use MeCodeNinja\GitHubWebhooks\Events\PullRequest;
 use MeCodeNinja\GitHubWebhooks\GitHub\Config;
@@ -80,6 +81,11 @@ class PullRequestListener
 
         for ($i=0; $i < count($checksArr); $i++) {
             $checkObj = CheckFactory::create($checksArr[$i], $this->_content, $this->_token);
+
+            if (!is_object($checkObj)) {
+                Log::warning("\MeCodeNinja\GitHubWebhooks\Listeners\PullRequestListener::handle got null object. SKIPPING");
+                return;
+            }
 
             if ($checkObj->doCheck()) {
                 $this->_oStatus->setState('success');
