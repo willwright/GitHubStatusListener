@@ -42,7 +42,7 @@ class Config
         if (!Storage::disk('local')->exists(self::REPO_CONFIG_FILE_NAME)) {
             Storage::disk('local')->put(self::REPO_CONFIG_FILE_NAME,'repositories:
   -
-    name: ogranization/repo
+    name: organization/repo
     token: token
     checks:
       BranchCheck:
