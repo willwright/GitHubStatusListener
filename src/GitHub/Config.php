@@ -40,10 +40,15 @@ class Config
      */
     public function createRepoConfigFile() {
         if (!Storage::disk('local')->exists(self::REPO_CONFIG_FILE_NAME)) {
-            Storage::disk('local')->put(self::REPO_CONFIG_FILE_NAME,'repository:
+            Storage::disk('local')->put(self::REPO_CONFIG_FILE_NAME,'repositories:
   -
-    #name: organization/repo
-    #token: mytoken');
+    name: ogranization/repo
+    token: token
+    checks:
+      BranchCheck:
+        branches: [origin/develop]
+      PathCheck:
+        paths: [/^vendor\//]');
         }
 
         return;
