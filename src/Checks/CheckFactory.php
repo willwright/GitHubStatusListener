@@ -12,9 +12,10 @@ class CheckFactory
      * @param $checkType
      * @param $content
      * @param $token
+     * @param array $config
      * @return CheckAbstract|null
      */
-    public static function create($checkType, $content, $token) {
+    public static function create($checkType, $content, $token, $config = []) {
         $me = new CheckFactory();
         $className = $me->getClassByKey($checkType);
         if (empty($className)) {
@@ -30,6 +31,7 @@ class CheckFactory
         $checkObj = new $className();
         $checkObj->setContent($content);
         $checkObj->setToken($token);
+        $checkObj->setConfig($config);
 
         return $checkObj;
     }

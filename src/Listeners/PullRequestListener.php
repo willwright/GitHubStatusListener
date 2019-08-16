@@ -79,8 +79,8 @@ class PullRequestListener
         //@TODO: Possible to use Laravel Config SEE: Package development instead of YAML?
         $checksArr = $this->_config->getChecks($json->repository->full_name);
 
-        for ($i=0; $i < count($checksArr); $i++) {
-            $checkObj = CheckFactory::create($checksArr[$i], $this->_content, $this->_token);
+        foreach ($checksArr as $key => $value) {
+            $checkObj = CheckFactory::create($key, $this->_content, $this->_token, $value);
 
             if (!is_object($checkObj)) {
                 Log::warning("\MeCodeNinja\GitHubWebhooks\Listeners\PullRequestListener::handle got null object. SKIPPING");
