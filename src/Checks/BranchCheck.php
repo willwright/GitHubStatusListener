@@ -35,6 +35,9 @@ class BranchCheck extends CheckAbstract
 
         $tokenCloneUrl = $this->getTokenCloneUrl($this->_token, $clone_url);
 
+        /**
+         * Clone the repo into our storage path
+         */
         $process = new Process("git clone $tokenCloneUrl $this->_repoPath");
         $process->setTimeout(3600);
         try {
@@ -45,6 +48,11 @@ class BranchCheck extends CheckAbstract
             return false;
         }
 
+        /**
+         * git fetch
+         *
+         * To make sure that we have that latest in case we've cloned this before
+         */
         $process = new Process("git fetch");
         $process->setWorkingDirectory($this->_repoPath);
         $process->setTimeout(3600);
@@ -92,6 +100,11 @@ class BranchCheck extends CheckAbstract
         return $reflect->getShortName();
     }
 
+    /**
+     * Return the Description to be used in the Status object for this particular Check
+     *
+     * @return string
+     */
     function getDescription()
     {
         if (!key_exists('branches', $this->_config)) {
