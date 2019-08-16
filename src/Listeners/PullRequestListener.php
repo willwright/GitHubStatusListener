@@ -71,12 +71,8 @@ class PullRequestListener
             return;
         }
 
-        //@TODO: Move the Status logic to the Check Object or to a Status Object or helper
-
         $this->_oStatus = new Status($this->_client, $this->_token);
 
-        //@TODO: Read config here and loop over Checks using factory to create concrete objects and call doCheck
-        //@TODO: Possible to use Laravel Config SEE: Package development instead of YAML?
         $checksArr = $this->_config->getChecks($json->repository->full_name);
 
         foreach ($checksArr as $key => $value) {
@@ -103,9 +99,10 @@ class PullRequestListener
             $this->_oStatus->setDescription($checkObj->getDescription());
 
             try {
-//            $this->_oStatus->create();
+                $this->_oStatus->create();
             } catch (GuzzleException $guzzleException) {
-                //@TODO: What to do wih this?
+                Log::error("Unable to create Status in GitHub for: " . $checkObj->getContext());
+                report($guzzleException);
             }
         }
 
