@@ -19,6 +19,8 @@ class PathCheck extends CheckAbstract
     /** @var string */
     private $_nodeId;
 
+    const PULL_REQUEST_BATCH_SIZE = 100;
+
     /**
      * This is specific implementation of check for this specific Listener
      *
@@ -34,6 +36,7 @@ class PathCheck extends CheckAbstract
 
         do {
             try {
+                //Query GitHub for files in the PullRequest
                 $response = $this->filesQuery($this->_token, $this->_nodeId, $after);
             } catch (GuzzleException $guzzleException) {
                 //@TODO: Do something with this
@@ -56,14 +59,12 @@ class PathCheck extends CheckAbstract
             $after =  $responseJSON->data->node->files->pageInfo->endCursor;
         } while($responseJSON->data->node->files->pageInfo->hasNextPage);
 
-        //@TODO can the check be extracted into some kind of object for "checking" stuff?
-        //Loop over the paths looking for matches
-
         if (!key_exists('paths', $this->_config)) {
             Log::info("No paths configured for PathCheck return PASS");
             return true;
         }
 
+        //Loop over the paths looking for matches
         for ($i=0; $i < count($this->_config['paths']); $i++) {
             $path = $this->_config['paths'][$i];
             try {
@@ -100,6 +101,8 @@ class PathCheck extends CheckAbstract
     }
 
     /**
+     * Return the Description to be used in the Status object for this particular Check
+     *
      * @return string
      */
     function getDescription()
@@ -124,7 +127,7 @@ class PathCheck extends CheckAbstract
         }
 
         $payload = new \stdClass();
-        $payload->query = sprintf('query { node(id:"%s") { ... on PullRequest { id, files(first:5 %s) { totalCount, edges {node { path },cursor } pageInfo { endCursor, hasNextPage} } } } }', $nodeID, $afterCursor);
+        $payload->query = sprintf('query { node(id:"%s") { ... on PullRequest { id, files(first:%u %s) { totalCount, edges {node { path },cursor } pageInfo { endCursor, hasNextPage} } } } }', $nodeID, self::PULL_REQUEST_BATCH_SIZE,$afterCursor);
 
         $response = $this->_client->request('POST', self::GRAPHQL_ENDPOINT,[
             'headers' => [
