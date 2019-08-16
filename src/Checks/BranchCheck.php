@@ -56,16 +56,24 @@ class BranchCheck extends CheckAbstract
             return false;
         }
 
-        /**
-         * Do the actual check to determine status
-         */
-        if ($this->hasBranchMerged("origin/$headRef",'origin/develop')
-            || $this->isForkedFrom("origin/$headRef",'origin/develop')) {
-            return false;
-        } else {
+        if (!key_exists('branches', $this->_config)) {
+            Log::info("No branches configured for BranchCheck return PASS");
             return true;
         }
 
+        /**
+         * Do the actual check to determine status
+         * Check each branch in the configuration
+         */
+        for ($i=0; $i < count($this->_config['branches']); $i++) {
+            $branch = $this->_config['branches'][$i];
+            if ($this->hasBranchMerged("origin/$headRef",$branch)
+                || $this->isForkedFrom("origin/$headRef",$branch)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -86,7 +94,12 @@ class BranchCheck extends CheckAbstract
 
     function getDescription()
     {
-        return "Passes if branch does not contain origin/develop";
+        if (!key_exists('branches', $this->_config)) {
+            return "No branches configured for BranchCheck";
+        } else {
+            $branchStr = implode(",", $this->_config['branches']);
+            return "Passes if branch does not contain branches: ". $branchStr;
+        }
     }
 
     /**
