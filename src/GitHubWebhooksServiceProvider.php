@@ -2,24 +2,37 @@
 
 namespace MeCodeNinja\GitHubWebhooks;
 
-use App\Events\GitHub\PullRequest;
-use App\Listeners\GitHub\DevelopBranchListener;
-use App\Listeners\GitHub\VendorPathListener;
+use MeCodeNinja\GitHubWebhooks\Events\PullRequest;
+use MeCodeNinja\GitHubWebhooks\GitHub\Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use MeCodeNinja\GitHubWebhooks\Listeners\PullRequestListener;
 
 class GitHubWebhooksServiceProvider extends ServiceProvider
 {
+    const CONFIG_FILE = 'config/githubwebhooks.php';
+
     /**
      * Bootstrap services.
      *
+     * @param Config $config
      * @return void
      */
-    public function boot()
+    public function boot(Config $config)
     {
         //Bind Event Listeners
-        Event::listen(PullRequest::class, DevelopBranchListener::class);
-        Event::listen(PullRequest::class, VendorPathListener::class);
+        Event::listen(PullRequest::class, PullRequestListener::class);
+
+        //Bind Routes
+        $this->loadRoutesFrom(__DIR__.'/routes/api.php');
+
+        //Make sure config file exists
+        $config->createRepoConfigFile();
+
+        //Publish config file
+        $this->publishes([
+            __DIR__. DIRECTORY_SEPARATOR . self::CONFIG_FILE => config_path('githubwebhooks.php'),
+        ]);
     }
 
     /**
