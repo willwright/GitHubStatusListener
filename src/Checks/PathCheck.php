@@ -2,7 +2,9 @@
 
 namespace MeCodeNinja\GitHubWebhooks\Checks;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Log;
 
 class PathCheck extends CheckAbstract
 {
@@ -11,11 +13,8 @@ class PathCheck extends CheckAbstract
     /** @var array  */
     private $_files = [];
 
-    /** @var  */
+    /** @var Client */
     private $_client;
-
-    /** @var string */
-    private $_token;
 
     /** @var string */
     private $_nodeId;
@@ -27,11 +26,15 @@ class PathCheck extends CheckAbstract
      */
     function doCheck()
     {
+        $this->_client = new Client();
         $after = null;
+
+        $json = json_decode($this->_content);
+        $this->_nodeId = $json->pull_request->node_id;
 
         do {
             try {
-                $response = $this->filesQuery($this->_client, $this->_token, $this->_nodeId, $after);
+                $response = $this->filesQuery($this->_token, $this->_nodeId, $after);
             } catch (GuzzleException $guzzleException) {
                 //@TODO: Do something with this
                 return false;
@@ -55,10 +58,25 @@ class PathCheck extends CheckAbstract
 
         //@TODO can the check be extracted into some kind of object for "checking" stuff?
         //Loop over the paths looking for matches
-        $resultsArr = preg_grep('/^vendor\//', $this->_files);
-        if (count($resultsArr) > 0) {
-            //Status Failed
-            return false;
+
+        if (!key_exists('paths', $this->_config)) {
+            Log::info("No paths configured for PathCheck return PASS");
+            return true;
+        }
+
+        for ($i=0; $i < count($this->_config['paths']); $i++) {
+            $path = $this->_config['paths'][$i];
+            try {
+                $resultsArr = preg_grep($path, $this->_files);
+            } catch (\ErrorException $errorException) {
+                report($errorException);
+                $resultsArr = [];
+            }
+
+            if (count($resultsArr) > 0) {
+                //Status Failed
+                return false;
+            }
         }
 
         //Status Passed
@@ -99,7 +117,7 @@ class PathCheck extends CheckAbstract
      * @return int|mixed|\Psr\Http\Message\ResponseInterface
      * @throws GuzzleException
      */
-    private function filesQuery(\GuzzleHttp\Client $client, $token, $nodeID, $after = null) {
+    private function filesQuery($token, $nodeID, $after = null) {
         $afterCursor = null;
         if (!empty($after)) {
             $afterCursor = "after: $after";
@@ -108,7 +126,7 @@ class PathCheck extends CheckAbstract
         $payload = new \stdClass();
         $payload->query = sprintf('query { node(id:"%s") { ... on PullRequest { id, files(first:5 %s) { totalCount, edges {node { path },cursor } pageInfo { endCursor, hasNextPage} } } } }', $nodeID, $afterCursor);
 
-        $response = $client->request('POST', self::GRAPHQL_ENDPOINT,[
+        $response = $this->_client->request('POST', self::GRAPHQL_ENDPOINT,[
             'headers' => [
                 'Authorization' => "token $token"
             ],
