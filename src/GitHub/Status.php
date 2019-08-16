@@ -2,7 +2,6 @@
 namespace MeCodeNinja\GitHubWebhooks\GitHub;
 
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Response;
 
 class Status implements StatusInterface
 {
