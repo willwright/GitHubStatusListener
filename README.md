@@ -76,7 +76,7 @@ merged into it.
 Note that due to Git's commit and branchng internal architecture determining whether a branch has had another branch
  merged into it or not is not an exact science and this check is prone to false positives.
  
- _Example_
+ Example
  ```yaml
       BranchCheck:
         branches: [origin/develop]
@@ -96,7 +96,7 @@ If a match it found then the check will report a failure.
 Example
 ```yaml
       PathCheck:
-        paths: [/^vendor\//]');
+        paths: [/^vendor\//]
 
 ```
 
@@ -106,4 +106,5 @@ The example will check the collection of changed paths in the Pull Request for `
 The developer may have their own checks that they want to perform.  In order to create a new type of check the developer should
 
 1. Create a new Check Class which extends `\MeCodeNinja\GitHubWebhooks\Checks\CheckAbstract`
-2. Implement the methods  
+2. Implement the methods required by the interface
+3. Register your Class in the `checks` array of `config/githubwebhooks.php`
