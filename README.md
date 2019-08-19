@@ -55,8 +55,8 @@ Checks are the Class that actually do work.  Each **must** extend `\MeCodeNinja\
 Checks are made available for use to the Factory via `config/githubwebhooks.php`.
 
 This package comes with:
-* \MeCodeNinja\GitHubWebhooks\Checks\BranchCheck
-* \MeCodeNinja\GitHubWebhooks\Checks\PathCheck
+* `\MeCodeNinja\GitHubWebhooks\Checks\BranchCheck`
+* `\MeCodeNinja\GitHubWebhooks\Checks\PathCheck`
 
 The Key used in the repository configuration can be found from `config/githubwebhooks.php`.  They are:
 * BranchCheck
