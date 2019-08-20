@@ -8,7 +8,7 @@ Tag 1.0+ is intended for use with Laravel 5.6
 composer require mecodeninja/githubwebhooks:^1.0
 ```
 
-##Installation
+## Installation
 Install Package via Composer
 ```bash
 composer require mecodeninja/githubwebhooks:^1.0
@@ -47,22 +47,22 @@ repo > public_repo (If your Repository is Public)
 >
 >Do **not** commit `githubwebhooks-config.yaml` to your SVN.  It contains sensative information
 
-##Repositories
+## Repositories
 As many repositories can be added for 
 
-##Check Types
+## Check Types
 Checks are the Class that actually do work.  Each **must** extend `\MeCodeNinja\GitHubWebhooks\Checks\CheckAbstract`.
 Checks are made available for use to the Factory via `config/githubwebhooks.php`.
 
 This package comes with:
-* \MeCodeNinja\GitHubWebhooks\Checks\BranchCheck
-* \MeCodeNinja\GitHubWebhooks\Checks\PathCheck
+* `\MeCodeNinja\GitHubWebhooks\Checks\BranchCheck`
+* `\MeCodeNinja\GitHubWebhooks\Checks\PathCheck`
 
 The Key used in the repository configuration can be found from `config/githubwebhooks.php`.  They are:
 * BranchCheck
 * PathCheck
 
-###BranchCheck
+### BranchCheck
 Branch request is designed to ensure that feature branch has not been forked from a particular branch and has not had a
 particular branch merged into it.
 
@@ -84,7 +84,7 @@ Note that due to Git's commit and branchng internal architecture determining whe
 ```
 The example will result in the Pull Request branch being checked for `orign/develop`
 
-###PathCheck
+### PathCheck
 PathCheck is designed to ensure that a specific path has not been modified in a feature branch.
 
 Many modern applciations are built from frameworks or groups of modules.  Best practice is to extend the libraries
@@ -102,7 +102,7 @@ Example
 
 The example will check the collection of changed paths in the Pull Request for `/vendor`.  If found the check will report a failure.
 
-##Extending
+## Extending
 The developer may have their own checks that they want to perform.  In order to create a new type of check the developer should
 
 1. Create a new Check Class which extends `\MeCodeNinja\GitHubWebhooks\Checks\CheckAbstract`
