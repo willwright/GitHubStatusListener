@@ -1,6 +1,6 @@
 <?php
 
-namespace MeCodeNinja\GitHubWebhooks\Checks;
+namespace MeCodeNinja\GitHubWebhooks\Check;
 
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Exception\ProcessFailedException;

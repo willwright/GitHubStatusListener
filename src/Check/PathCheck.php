@@ -1,6 +1,6 @@
 <?php
 
-namespace MeCodeNinja\GitHubWebhooks\Checks;
+namespace MeCodeNinja\GitHubWebhooks\Check;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;

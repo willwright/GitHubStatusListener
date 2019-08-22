@@ -55,7 +55,7 @@ class Config
     }
 
     /**
-     * Get the "checks" sequence from the Config file
+     * Get the "checks" sequence from the Config file for the given repo
      *
      * @param string $repoName
      * @return array
@@ -66,8 +66,31 @@ class Config
 
         $collection = collect($value);
         $repoNode = collect($collection->get('repositories'));
-        $repoNode = collect($repoNode->where('name', $repoName)->first());
+        //@TODO: Have this return an array of matched checks
+        $repoNode = collect($repoNode->where('name', $repoName)
+            ->where('name', '*')
+            ->all());
 
         return collect($repoNode)->get('checks');
+    }
+
+    /**
+     *
+     *
+     * @param string $repoName
+     * @return array
+     */
+    public function getRepositoriesByName(string $repoName) {
+        $repositoriesArr = [];
+        $contents = Storage::get(self::REPO_CONFIG_FILE_NAME);
+        $value = Yaml::parse($contents);
+
+        $collection = collect($value);
+        $repositories = collect($collection->get('repositories'));
+        //@TODO: Have this return an array of matched checks
+        $repositoriesArr = $repositories->whereIn('name', [$repoName,'*'])
+            ->all();
+
+        return $repositoriesArr;
     }
 }

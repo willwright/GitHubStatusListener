@@ -51,12 +51,12 @@ repo > public_repo (If your Repository is Public)
 As many repositories can be added for 
 
 ## Check Types
-Checks are the Class that actually do work.  Each **must** extend `\MeCodeNinja\GitHubWebhooks\Checks\CheckAbstract`.
+Checks are the Class that actually do work.  Each **must** extend `\MeCodeNinja\GitHubWebhooks\Check\CheckAbstract`.
 Checks are made available for use to the Factory via `config/githubwebhooks.php`.
 
 This package comes with:
-* `\MeCodeNinja\GitHubWebhooks\Checks\BranchCheck`
-* `\MeCodeNinja\GitHubWebhooks\Checks\PathCheck`
+* `\MeCodeNinja\GitHubWebhooks\Check\BranchCheck`
+* `\MeCodeNinja\GitHubWebhooks\Check\PathCheck`
 
 The Key used in the repository configuration can be found from `config/githubwebhooks.php`.  They are:
 * BranchCheck
@@ -105,6 +105,6 @@ The example will check the collection of changed paths in the Pull Request for `
 ## Extending
 The developer may have their own checks that they want to perform.  In order to create a new type of check the developer should
 
-1. Create a new Check Class which extends `\MeCodeNinja\GitHubWebhooks\Checks\CheckAbstract`
+1. Create a new Check Class which extends `\MeCodeNinja\GitHubWebhooks\Check\CheckAbstract`
 2. Implement the methods required by the interface
 3. Register your Class in the `checks` array of `config/githubwebhooks.php`

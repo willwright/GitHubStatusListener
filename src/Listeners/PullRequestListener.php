@@ -6,7 +6,7 @@ namespace MeCodeNinja\GitHubWebhooks\Listeners;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
-use MeCodeNinja\GitHubWebhooks\Checks\CheckFactory;
+use MeCodeNinja\GitHubWebhooks\Check\CheckFactory;
 use MeCodeNinja\GitHubWebhooks\Events\PullRequest;
 use MeCodeNinja\GitHubWebhooks\GitHub\Config;
 use MeCodeNinja\GitHubWebhooks\GitHub\Status;
@@ -62,14 +62,20 @@ class PullRequestListener
 
         $this->_nodeId = $json->pull_request->node_id;
 
-        /**
-         * Get the User token so that we can interact with the repo
-         */
-        $this->_token = $this->_config->getUserToken($json->repository->full_name);
+        //@@TODO: loop over matched repositories here
+        $repositoriesArr = $this->_config->getRepositoriesByName($json->repository->full_name);
+        foreach ($repositoriesArr as $key => $respository) {
+            /**
+             * Get the User token so that we can interact with the repo
+             */
+            $this->_token = $this->_config->getUserToken($json->repository->full_name);
 
-        if (empty($this->_token)) {
-            return;
+            if (empty($this->_token)) {
+                return;
+            }
         }
+
+
 
         $this->_oStatus = new Status($this->_client, $this->_token);
 
@@ -99,7 +105,7 @@ class PullRequestListener
             $this->_oStatus->setDescription($checkObj->getDescription());
 
             try {
-                $this->_oStatus->create();
+                //$this->_oStatus->create();
             } catch (GuzzleException $guzzleException) {
                 Log::error("Unable to create Status in GitHub for: " . $checkObj->getContext());
                 report($guzzleException);
