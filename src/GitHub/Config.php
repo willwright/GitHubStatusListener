@@ -5,6 +5,8 @@ namespace MeCodeNinja\GitHubWebhooks\GitHub;
 
 
 use Illuminate\Support\Facades\Storage;
+use MeCodeNinja\GitHubWebhooks\Check\CheckFactory;
+use MeCodeNinja\GitHubWebhooks\Repository\Repository;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -75,7 +77,7 @@ class Config
     }
 
     /**
-     *
+     * Returns an Array of Repositories which match the given input
      *
      * @param string $repoName
      * @return array
@@ -87,9 +89,16 @@ class Config
 
         $collection = collect($value);
         $repositories = collect($collection->get('repositories'));
-        //@TODO: Have this return an array of matched checks
-        $repositoriesArr = $repositories->whereIn('name', [$repoName,'*'])
-            ->all();
+        $repositories->whereIn('name', [$repoName,'*'])
+            ->each(function($item, $key) use (&$repositoriesArr) {
+                $repository = new Repository();
+                $repository->setName($item['name']);
+                $repository->setToken($item['token']);
+                foreach ($item['checks'] as $key => $value) {
+                    $repository->appendCheck(CheckFactory::create($key, $repository->getToken(), $value));
+                }
+                $repositoriesArr[] = $repository;
+            });
 
         return $repositoriesArr;
     }

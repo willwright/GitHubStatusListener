@@ -3,7 +3,6 @@
 
 namespace MeCodeNinja\GitHubWebhooks\Check;
 
-use Exception;
 use Illuminate\Support\Facades\Log;
 
 class CheckFactory
@@ -21,7 +20,7 @@ class CheckFactory
      * @param array $config
      * @return CheckAbstract|null
      */
-    public static function create($checkType, $content, $token, $config = []) {
+    public static function create($checkType, $token, $config = []) {
         $me = new CheckFactory();
         $className = $me->getClassByKey($checkType);
         if (empty($className)) {
@@ -36,7 +35,6 @@ class CheckFactory
 
         /** @var CheckAbstract $checkObj */
         $checkObj = new $className();
-        $checkObj->setContent($content);
         $checkObj->setToken($token);
         $checkObj->setConfig($config);
 

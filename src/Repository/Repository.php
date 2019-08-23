@@ -60,4 +60,11 @@ class Repository extends Model
         $this->_checks = $checks;
     }
 
+    /**
+     * @param $check
+     */
+    public function appendCheck($check) {
+        $this->_checks[] = $check;
+    }
+
 }

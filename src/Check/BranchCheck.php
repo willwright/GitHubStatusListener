@@ -3,6 +3,8 @@
 namespace MeCodeNinja\GitHubWebhooks\Check;
 
 use Illuminate\Support\Facades\Log;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -16,9 +18,9 @@ class BranchCheck extends CheckAbstract
      *
      * @return bool
      */
-    function doCheck()
+    function doCheck($content)
     {
-        $json = json_decode($this->_content);
+        $json = json_decode($content);
 
         $headRef = $json->pull_request->head->ref;
         $clone_url = $json->repository->clone_url;
@@ -38,7 +40,7 @@ class BranchCheck extends CheckAbstract
         /**
          * Clone the repo into our storage path
          */
-        $process = new Process("git clone $tokenCloneUrl $this->_repoPath");
+        $process = new Process(['git','clone',$tokenCloneUrl,$this->_repoPath]);
         $process->setTimeout(3600);
         try {
             $process->run();
@@ -53,7 +55,7 @@ class BranchCheck extends CheckAbstract
          *
          * To make sure that we have that latest in case we've cloned this before
          */
-        $process = new Process("git fetch");
+        $process = new Process(['git','fetch']);
         $process->setWorkingDirectory($this->_repoPath);
         $process->setTimeout(3600);
         try {
@@ -93,8 +95,8 @@ class BranchCheck extends CheckAbstract
     function getContext()
     {
         try {
-            $reflect = new \ReflectionClass($this);
-        } catch(\ReflectionException $reflectionException) {
+            $reflect = new ReflectionClass($this);
+        } catch(ReflectionException $reflectionException) {
             return get_class($this);
         }
         return $reflect->getShortName();
@@ -123,7 +125,7 @@ class BranchCheck extends CheckAbstract
      * @return bool
      */
     private function isForkedFrom(string $a, string $b) {
-        $process = new Process("git merge-base --fork-point $a $b");
+        $process = new Process(['git','merge-base','--fork-point',$a,$b]);
         $process->setWorkingDirectory($this->_repoPath);
         $process->setTimeout(3600);
         $process->run();
@@ -140,7 +142,7 @@ class BranchCheck extends CheckAbstract
      * @return bool
      */
     private function hasBranchMerged(string $haystack, string $needleBranch) {
-        $process = new Process("git branch -r --merged $haystack");
+        $process = new Process(['git','branch','-r','--merged',$haystack]);
         $process->setWorkingDirectory($this->_repoPath);
         $process->setTimeout(3600);
         $process->run();

@@ -6,7 +6,7 @@ namespace MeCodeNinja\GitHubWebhooks\Check;
 
 interface CheckInterface
 {
-    function doCheck();
+    function doCheck($content);
     function getContext();
     function getDescription();
 }
