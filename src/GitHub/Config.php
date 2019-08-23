@@ -5,6 +5,8 @@ namespace MeCodeNinja\GitHubWebhooks\GitHub;
 
 
 use Illuminate\Support\Facades\Storage;
+use MeCodeNinja\GitHubWebhooks\Check\CheckFactory;
+use MeCodeNinja\GitHubWebhooks\Repository\Repository;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -55,7 +57,7 @@ class Config
     }
 
     /**
-     * Get the "checks" sequence from the Config file
+     * Get the "checks" sequence from the Config file for the given repo
      *
      * @param string $repoName
      * @return array
@@ -66,8 +68,38 @@ class Config
 
         $collection = collect($value);
         $repoNode = collect($collection->get('repositories'));
-        $repoNode = collect($repoNode->where('name', $repoName)->first());
+        //@TODO: Have this return an array of matched checks
+        $repoNode = collect($repoNode->where('name', $repoName)
+            ->where('name', '*')
+            ->all());
 
         return collect($repoNode)->get('checks');
+    }
+
+    /**
+     * Returns an Array of Repositories which match the given input
+     *
+     * @param string $repoName
+     * @return array
+     */
+    public function getRepositoriesByName(string $repoName) {
+        $repositoriesArr = [];
+        $contents = Storage::get(self::REPO_CONFIG_FILE_NAME);
+        $value = Yaml::parse($contents);
+
+        $collection = collect($value);
+        $repositories = collect($collection->get('repositories'));
+        $repositories->whereIn('name', [$repoName,'*'])
+            ->each(function($item, $key) use (&$repositoriesArr) {
+                $repository = new Repository();
+                $repository->setName($item['name']);
+                $repository->setToken($item['token']);
+                foreach ($item['checks'] as $key => $value) {
+                    $repository->appendCheck(CheckFactory::create($key, $repository->getToken(), $value));
+                }
+                $repositoriesArr[] = $repository;
+            });
+
+        return $repositoriesArr;
     }
 }
