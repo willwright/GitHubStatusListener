@@ -1,10 +1,13 @@
 <?php
 
-namespace MeCodeNinja\GitHubWebhooks\Checks;
+namespace MeCodeNinja\GitHubWebhooks\Check;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
+use ReflectionClass;
+use ReflectionException;
+use stdClass;
 
 class PathCheck extends CheckAbstract
 {
@@ -26,12 +29,12 @@ class PathCheck extends CheckAbstract
      *
      * @return bool
      */
-    function doCheck()
+    function doCheck($content)
     {
         $this->_client = new Client();
         $after = null;
 
-        $json = json_decode($this->_content);
+        $json = json_decode($content);
         $this->_nodeId = $json->pull_request->node_id;
 
         do {
@@ -93,8 +96,8 @@ class PathCheck extends CheckAbstract
     function getContext()
     {
         try {
-            $reflect = new \ReflectionClass($this);
-        } catch(\ReflectionException $reflectionException) {
+            $reflect = new ReflectionClass($this);
+        } catch(ReflectionException $reflectionException) {
             return get_class($this);
         }
         return $reflect->getShortName();
@@ -126,7 +129,7 @@ class PathCheck extends CheckAbstract
             $afterCursor = "after: $after";
         }
 
-        $payload = new \stdClass();
+        $payload = new stdClass();
         $payload->query = sprintf('query { node(id:"%s") { ... on PullRequest { id, files(first:%u %s) { totalCount, edges {node { path },cursor } pageInfo { endCursor, hasNextPage} } } } }', $nodeID, self::PULL_REQUEST_BATCH_SIZE,$afterCursor);
 
         $response = $this->_client->request('POST', self::GRAPHQL_ENDPOINT,[

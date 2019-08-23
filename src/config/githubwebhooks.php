@@ -11,7 +11,7 @@ return [
     |
     */
     'checks' => [
-        'BranchCheck' => \MeCodeNinja\GitHubWebhooks\Checks\BranchCheck::class,
-        'PathCheck' => \MeCodeNinja\GitHubWebhooks\Checks\PathCheck::class,
+        'BranchCheck' => \MeCodeNinja\GitHubWebhooks\Check\BranchCheck::class,
+        'PathCheck' => \MeCodeNinja\GitHubWebhooks\Check\PathCheck::class,
     ]
 ];
