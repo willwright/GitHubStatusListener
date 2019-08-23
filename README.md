@@ -56,7 +56,9 @@ Example:
 Given `PullRequest.repo.full_name` = "willwright/githubwebhooks".
 
 `respository.name` = "willwright/githubwebhooks" will match
+
 `respository.name` = "*" will match
+
 `respository.name` = "notmy/repo" will not match
 
 ```yaml
