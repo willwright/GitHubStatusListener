@@ -1,23 +1,14 @@
 - title: Documentation
-  url: docs
+  url: ""
   links:
-    - title: "Getting Started"
-      url: "docs/getting-started"
+    - title: "Prerequisites"
+      url: "docs/prereqs"
+    - title: "Configuration"
+      url: "docs/configuration"
       children:
-        - title: Features
-          url: "docs/getting-started#getting-started"
-        - title: Development
-          url: "docs/getting-started#development"
-        - title: Customization
-          url: "docs/getting-started#customization"
-    - title: "Extras"
-      url: "docs/extras"
-      children:
-        - title: Quizzes
-          url: "docs/extras/example-quiz"
-        - title: Tags Page
-          url: "tags"
-    - title: "About"
-      url: "about"
-    - title: "News"
-      url: "news"
+        - title: Repositories
+          url: "docs/configuration#repositories"
+        - title: Check Types
+          url: "docs/configuration#check types"
+    - title: "Extending"
+      url: "docs/extending"
