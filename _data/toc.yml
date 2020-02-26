@@ -9,6 +9,6 @@
         - title: Repositories
           url: "docs/configuration#repositories"
         - title: Check Types
-          url: "docs/configuration#check types"
+          url: "docs/configuration#check-types"
     - title: "Extending"
       url: "docs/extending"
