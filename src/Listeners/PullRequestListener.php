@@ -55,7 +55,7 @@ class PullRequestListener
      */
     public function handle(PullRequest $event)
     {
-        $this->_content = $event->_request->getContent();
+        $this->_content = $event->request->getContent();
         if (empty($this->_content)) {
             return;
         }

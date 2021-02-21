@@ -16,7 +16,7 @@ class PullRequest
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /** @var \Illuminate\Http\Request */
-    public $_request;
+    public $request;
 
     /**
      * Create a new event instance.
@@ -25,7 +25,7 @@ class PullRequest
      */
     public function __construct(Request $request)
     {
-        $this->_request = $request;
+        $this->request = $request;
     }
 
     /**

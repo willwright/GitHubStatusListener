@@ -33,8 +33,6 @@ class GithubController extends Controller
          * Dispatch PullRequest Event
          */
         event(new PullRequest($request));
-        $pullRequest = new PullRequest($request);
-        event('pullrequest',$pullRequest);
 
         return Response::HTTP_OK;
     }

@@ -18,7 +18,7 @@
   "extra": {
     "laravel" : {
       "providers": [
-        "MeCodeNinja\\GitHubWebhooks\\GitHubWebhooksServiceProvider"
+        "MeCodeNinja\\GitHubWebhooks\\Providers\\GitHubWebhooksServiceProvider"
       ]
     }
   },
